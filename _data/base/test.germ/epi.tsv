@@ -1,0 +1,5 @@
+epi	patientID	caseID	from	till	clinic	ward	room
+e1	p1	c1	2020-01-01T12:00:00	2020-01-05	c1	w1	r1
+e2	p1	c1	2020-01-05	2020-01-10	c1	w1	r2
+e3	p2	c2	2020-01-07	2020-01-11	c1	w1	r2
+e4	p3	c3	2019-12-20	2019-12-24	c1	w1	r2
