@@ -1,3 +1,4 @@
 _data/*
 !_data/test.germ
+!_data/base/test.germ
 .DS_Store
