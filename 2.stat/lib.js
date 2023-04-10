@@ -36,7 +36,7 @@ export function calc(cgmlstPairs, epiDist, VARS = {}, KEY = 'delay') {
 						// let con = contactsForPID(epiContacts, pid1, deg)
 						let t0 = Date.now()
 						let con = contactsForPID(epiContactsBelowCgmlst, pid1, deg)
-						console.log(pid1, pid2, 'contacts', con.length, Date.now() - t0,'ms')
+						// console.log(pid1, pid2, 'contacts', con.length, Date.now() - t0,'ms')
 						// debugFolder.file(pid1 + '.json').json = con
 						if (!con) console.log("ALARM", pid1)
 						if (con?.includes(pid2)) stat.contacts++

@@ -49,20 +49,25 @@ for (let germ of settings.items('dist')) {
 	// continue
 
 
-	// output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], delayDays: [7], contactDegrees: [1] }, 'degree')
-	// statFolder.file(`A-7-1.tsv`).text = TALI.grid.stringify(output)
-
-	// output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['room', 'ward', 'clinic', 'any'] }, 'location')
-	// statFolder.file(`X-0-0.tsv`).text = TALI.grid.stringify(output)
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], delayDays: [7], contactDegrees: [1] }, 'degree')
+	statFolder.file(`A-7-1.tsv`).text = TALI.grid.stringify(output)
 
 
-	// output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], delayDays: [0, 7, 14] }, 'delay',)
-	// statFolder.file(`A-X-0.tsv`).text = TALI.grid.stringify(output)
 
-	// output = lib.calc(cgmlstPairs, epiDist, { delayDays: [0, 7, 14, 21, 28] }, 'delay',)
-	// statFolder.file(`R-X-0.tsv`).text = TALI.grid.stringify(output)
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['room', 'ward', 'clinic', 'any'] }, 'location')
+	statFolder.file(`X-0-0.tsv`).text = TALI.grid.stringify(output)
 
-	// continue
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['room', 'ward', 'clinic', 'any'], contactDegrees: [1], delayDays: [7] }, 'location')
+	statFolder.file(`X-7-1.tsv`).text = TALI.grid.stringify(output)
+
+
+
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], delayDays: [0, 7, 14] }, 'delay',)
+	statFolder.file(`A-X-0.tsv`).text = TALI.grid.stringify(output)
+
+	output = lib.calc(cgmlstPairs, epiDist, { delayDays: [0, 7, 14, 21, 28] }, 'delay',)
+	statFolder.file(`R-X-0.tsv`).text = TALI.grid.stringify(output)
+
 
 
 	output = lib.calc(cgmlstPairs, epiDist, { contactDegrees: [0, 1, 2, 3] }, 'degree',)
@@ -71,7 +76,7 @@ for (let germ of settings.items('dist')) {
 	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['ward'], contactDegrees: [0, 1, 2, 3] }, 'degree')
 	statFolder.file(`W-0-X.tsv`).text = TALI.grid.stringify(output)
 
-	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], contactDegrees: [0, 1, 2, 3] }, 'degree')
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], contactDegrees: [0, 1, 2] }, 'degree')
 	statFolder.file(`A-0-X.tsv`).text = TALI.grid.stringify(output)
 
 
