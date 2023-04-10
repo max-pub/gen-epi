@@ -2,6 +2,7 @@
 export const filter = (o, f) => Object.fromEntries(Object.entries(o).filter(([k, v]) => f(k, v)))
 
 export function calc(cgmlstPairs, epiDist, VARS = {}, KEY = 'delay') {
+	// console.log('calc',)
 	const DEFAULT_VARS = { delayDays: [0], locationLayers: ['room'], contactDegrees: [0] }
 	VARS = { ...DEFAULT_VARS, ...VARS }
 	// console.log('cg',cgmlstDist)
@@ -30,7 +31,7 @@ export function calc(cgmlstPairs, epiDist, VARS = {}, KEY = 'delay') {
 					console.log('cgmlstPatients', cgmlstPatients.size)
 					// console.log(germ.name, dist, "dist", Object.keys(distances).length)
 					// if(deg>0) contacts = addContactDegree(contacts)
-					console.log(KEY.toUpperCase(), `cgMLST:${dist} | days:${day} | loc:${loc} | deg: ${deg}`, '---', JSON.stringify(VARS))
+					console.log(KEY.toUpperCase(), `cgMLST:${dist} | days:${day} | loc:${loc} | deg: ${deg}`)//, '---', JSON.stringify(VARS))
 					let stat = { pairs: cgmlstContacts.length, contacts: 0 }
 					for (let [pid1, pid2] of cgmlstContacts) {
 						// let con = contactsForPID(epiContacts, pid1, deg)
