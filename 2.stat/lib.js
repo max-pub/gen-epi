@@ -1,3 +1,5 @@
+// export const filterKeys = (o, f) => Object.fromEntries(Object.entries(o).filter(([k, v]) => [f(k),v]))
+export const filter = (o, f) => Object.fromEntries(Object.entries(o).filter(([k, v]) => f(k, v)))
 
 export function calc(cgmlstPairs, epiDist, VARS = {}, KEY = 'delay') {
 	const DEFAULT_VARS = { delayDays: [0], locationLayers: ['room'], contactDegrees: [0] }
@@ -9,18 +11,32 @@ export function calc(cgmlstPairs, epiDist, VARS = {}, KEY = 'delay') {
 	for (let day of VARS.delayDays) {
 		for (let loc of VARS.locationLayers) {
 			let epiContacts = contactFilter(epiDist, loc, -day)
+			// console.log('epiContacts',epiContacts)
+			console.log('epiContacts', Object.keys(epiContacts).length)
 			// console.log('epicon',epiContacts)
 			for (let deg of VARS.contactDegrees) {
+				let cgmlstPatients = new Set()
 				for (let dist in cgmlstPairs) {
 					// let cgmlstContacts = cgmlstFilter(cgmlstDist, dist)
 					let cgmlstContacts = cgmlstPairs[dist]
+					for (let p of cgmlstContacts.flat())
+						cgmlstPatients.add(p)
+					let epiContactsBelowCgmlst = filter(epiContacts, p => cgmlstPatients.has(p))
+					for(let p in epiContactsBelowCgmlst)
+						epiContactsBelowCgmlst[p] = epiContactsBelowCgmlst[p].filter(x=>cgmlstPatients.has(x))
+					// console.log('epiContactsBelowCgmlst', epiContactsBelowCgmlst)
+					// console.log('cgmlstContacts',cgmlstContacts.flat())
+					// console.log('cgmlstPatients',[...cgmlstPatients].sort())
+					console.log('cgmlstPatients', cgmlstPatients.size)
 					// console.log(germ.name, dist, "dist", Object.keys(distances).length)
 					// if(deg>0) contacts = addContactDegree(contacts)
 					console.log(KEY.toUpperCase(), `cgMLST:${dist} | days:${day} | loc:${loc} | deg: ${deg}`, '---', JSON.stringify(VARS))
 					let stat = { pairs: cgmlstContacts.length, contacts: 0 }
 					for (let [pid1, pid2] of cgmlstContacts) {
-						let con = contactsForPID(epiContacts, pid1, deg)
-						// console.log(pid1, pid2, 'contacts', con.length)
+						// let con = contactsForPID(epiContacts, pid1, deg)
+						let t0 = Date.now()
+						let con = contactsForPID(epiContactsBelowCgmlst, pid1, deg)
+						console.log(pid1, pid2, 'contacts', con.length, Date.now() - t0,'ms')
 						// debugFolder.file(pid1 + '.json').json = con
 						if (!con) console.log("ALARM", pid1)
 						if (con?.includes(pid2)) stat.contacts++
@@ -34,13 +50,13 @@ export function calc(cgmlstPairs, epiDist, VARS = {}, KEY = 'delay') {
 					if (KEY == 'degree') key = deg
 					// console.log("KEY", key)
 					// console.log(stat)
-					output.REL[key] ??= {}
-					output.REL[key][dist] = (stat.contacts * 100 / stat.pairs).toFixed(1)
 					output.ABS.TOTAL ??= {}
+					output.ABS.TOTAL[dist] = stat.pairs
 					output.ABS[key] ??= {}
 					output.ABS[key][dist] = stat.contacts
+					output.REL[key] ??= {}
+					output.REL[key][dist] = (stat.contacts * 100 / stat.pairs).toFixed(1)
 					// output.abs[key ][dist+ "tot"] = stat.pairs
-					output.ABS.TOTAL[dist] = stat.pairs
 
 				}
 			}
@@ -148,3 +164,6 @@ export function cgmlstPairs(data) {
 //     }
 //     return out
 // }
+
+
+

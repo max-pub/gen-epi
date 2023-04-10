@@ -11,7 +11,8 @@ let cgmlstDistances = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
 
 // let GERMS = ['esch.coli', 'sta.au', 'enco.faec']
 
-for (let germ of settings.folder.dist.list.reverse()) {
+// for (let germ of settings.folder.dist.list.reverse()) {
+for (let germ of settings.items('dist')) {
 	// for (let germName of GERMS) {
 	// let germ = settings.folder.dist.folder(germName)
 	// if (germ.name != "sta.au") continue
@@ -64,13 +65,13 @@ for (let germ of settings.folder.dist.list.reverse()) {
 	// continue
 
 
-	output = lib.calc(cgmlstPairs, epiDist, { contactDegrees: [0, 1] }, 'degree',)
+	output = lib.calc(cgmlstPairs, epiDist, { contactDegrees: [0, 1, 2, 3] }, 'degree',)
 	statFolder.file(`R-0-X.tsv`).text = TALI.grid.stringify(output)
 
-	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['ward'], contactDegrees: [0, 1] }, 'degree')
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['ward'], contactDegrees: [0, 1, 2, 3] }, 'degree')
 	statFolder.file(`W-0-X.tsv`).text = TALI.grid.stringify(output)
 
-	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], contactDegrees: [0, 1] }, 'degree')
+	output = lib.calc(cgmlstPairs, epiDist, { locationLayers: ['any'], contactDegrees: [0, 1, 2, 3] }, 'degree')
 	statFolder.file(`A-0-X.tsv`).text = TALI.grid.stringify(output)
 
 

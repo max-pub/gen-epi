@@ -1,0 +1,3 @@
+_data/*
+!_data/test.germ
+.DS_Store

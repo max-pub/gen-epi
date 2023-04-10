@@ -1,6 +1,7 @@
 
 import os
 import lib
+import sys
 # import plot
 import numpy
 from matplotlib import pyplot
@@ -54,9 +55,10 @@ def graph(data,germ,stat):
 
 
 
-
+# print("args", sys.argv[1])
 for germ in os.listdir(input):
 	if germ[0] == '.': continue
+	if len(sys.argv) > 1 and sys.argv[1] != germ: continue
 	print(germ)
 	for stat in os.listdir(input+'/'+germ):
 		print(germ,stat)
