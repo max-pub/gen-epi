@@ -21,7 +21,9 @@ for (let germ of settings.items('base')) {
 
 	for (let typ of ['cgmlst']) { // 'mlst',
 		let seq = type.calculateDistanceMatrix(data[typ], germ.name)
+		console.log(seq)
 		let pat = type.groupDistanceMatrixByPatientID(seq, data.meta)
+		console.log(pat)
 		let lt20 = type.filter(pat, 20)
 		distFolder.file('gen.tsv').text = TALI.grid.stringify({ lt20}, { sortRows: true, sortCols: true })
 		debugFolder.file('gen.tsv').text = TALI.grid.stringify({ pat, seq }, { sortRows: true, sortCols: true })

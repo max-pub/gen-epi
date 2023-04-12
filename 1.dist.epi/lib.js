@@ -104,6 +104,7 @@ export function crossMatch(tree, germID) {
 			if (output?.[p1]?.[p2] !== undefined) continue
 			// comparisons++
 			let result = contactBetweenTwoPatients(epi1, epi2)
+			console.log(p1,p2,result)
 			if (Object.keys(result).length == 0) continue
 			// if (Object.keys(result).length == 0) continue // CRITICAL... wieder einbauen?
 			output[p1][p2] = result
@@ -208,6 +209,7 @@ export function makeEpiTree(list) {
 		tree[row.patientID] ??= {}
 		tree[row.patientID][caseID] ??= {}
 		tree[row.patientID][caseID][id] ??= { ...select(row, 'from', 'till', 'clinic', 'ward', 'room') }
+		tree[row.patientID][caseID][id].room = tree[row.patientID][caseID][id].ward + '.' + tree[row.patientID][caseID][id].room
 		// if (!tree[row.patientID]) tree[row.patientID] = {}
 		// if (!tree[row.patientID][row.caseID]) tree[row.patientID][row.caseID] = {}
 		// if (!tree[row.patientID][row.caseID][id]) tree[row.patientID][row.caseID][id] = { ...select(row, 'from', 'till', 'clinic', 'ward', 'room') }
