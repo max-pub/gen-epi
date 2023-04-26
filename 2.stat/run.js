@@ -18,76 +18,106 @@ for (let germ of settings.items('dist')) {
 	// continue
 	let statFolder = settings.folder.stat.folder('gen.epi').folder(germ.name).make
 
+	let sequenceMatrix = TALI.grid.parse(germ.file(`seq.tsv`).text)
+	// let seq = lib.seqDateFilter(seqDist,90)
+	// statFolder.file('seq.tsv').text = TALI.grid.stringify(seq, { sortRows: true, sortCols: true })
+	// console.log('joo',sequenceMatrix)
+	// continue
 
-	let cgmlstDist = TALI.grid.parse(germ.file(`gen.tsv`).text).lt20
+	// let cgmlstDist = TALI.grid.parse(germ.file(`gen.tsv`).text).lt20
 	// console.log(cgmlstDist)
-	let cgmlstPairs = lib.cgmlstPairs(cgmlstDist)
+	// let cgmlstPairs = lib.cgmlstPairs(cgmlstDist)
 	// console.log(cgmlstPairs)
 
-	let epiDist = TALI.grid.parse(germ.file('epi.tsv').text)
+	let contactMatrix = TALI.grid.parse(germ.file('epi.tsv').text)
 
 
 
-	
-	calc({ // alle parameter fest
-		locationLayers: ['any'],
-		delayDays: [0],
-		contactDegrees: [0],
-		key: 'location',
-		file: statFolder.file(`A-0-0.tsv`),
-		cgmlstPairs,
-		epiDist,
+
+	// calc({ // alle parameter fest
+	// 	locationLayers: ['any'],
+	// 	delayDays: [0],
+	// 	contactDegrees: [0],
+	// 	key: 'location',
+	// 	file: statFolder.file(`A-0-0.tsv`),
+	// 	cgmlstPairs,
+	// 	epiDist,
+	// })
+
+	// calc({ // alle parameter fest
+	// 	locationLayers: ['any'],
+	// 	delayDays: [7],
+	// 	contactDegrees: [1],
+	// 	key: 'location',
+	// 	file: statFolder.file(`A-7-1.tsv`),
+	// 	cgmlstPairs,
+	// 	epiDist,
+	// })
+
+
+
+
+	// calc({ // location variabel
+	// 	locationLayers: ['room', 'ward', 'clinic', 'any'],
+	// 	delayDays: [0],
+	// 	contactDegrees: [0],
+	// 	key: 'location',
+	// 	file: statFolder.file(`X-0-0.tsv`),
+	// 	cgmlstPairs,
+	// 	epiDist,
+	// })
+
+	// console.log('joo',sequenceMatrix)
+	// calc({// delay variabel
+	// 	maxDistanceBetweenSequences: 20,
+	// 	maxTimespanBetweenSequences: [90],
+	// 	locationLayer: ['any'],
+	// 	maxTimespanBetweensContacts: [0, 7],
+	// 	maxContactDepth: [0],
+	// 	key: 'maxTimespanBetweensContacts',
+	// 	file: statFolder.file(`A-X-0.tsv`),
+	// 	sequenceMatrix,
+	// 	contactMatrix,
+	// })
+
+	calc({
+		maxDistanceBetweenSequences: 20,
+		maxTimespanBetweenSequences: [30,90,360,9999],
+		locationLayer: ['any'],
+		maxTimespanBetweensContacts: [0],
+		maxContactDepth: [0],
+		key: 'maxTimespanBetweenSequences',
+		file: statFolder.file(`A-0-0-X.tsv`),
+		sequenceMatrix,
+		contactMatrix,
 	})
 
-	calc({ // alle parameter fest
-		locationLayers: ['any'],
-		delayDays: [7],
-		contactDegrees: [1],
-		key: 'location',
-		file: statFolder.file(`A-7-1.tsv`),
-		cgmlstPairs,
-		epiDist,
-	})
+	// calc({// kontakt-tiefe variabel
+	// 	locationLayers: ['any'],
+	// 	delayDays: [0],
+	// 	contactDegrees: [0, 1],
+	// 	key: 'degree',
+	// 	file: statFolder.file(`A-0-X.tsv`),
+	// 	cgmlstPairs,
+	// 	epiDist,
+	// })
 
-
-
-	
-	calc({ // location variabel
-		locationLayers: ['room', 'ward', 'clinic', 'any'],
-		delayDays: [0],
-		contactDegrees: [0],
-		key: 'location',
-		file: statFolder.file(`X-0-0.tsv`),
-		cgmlstPairs,
-		epiDist,
-	})
-
-	calc({// delay variabel
-		locationLayers: [ 'any'],
-		delayDays: [0,7,14,21,28],
-		contactDegrees: [0],
-		key: 'days',
-		file: statFolder.file(`A-X-0.tsv`),
-		cgmlstPairs,
-		epiDist,
-	})
-
-	calc({// kontakt-tiefe variabel
-		locationLayers: [ 'any'],
-		delayDays: [0],
-		contactDegrees: [0,1,2,3],
-		key: 'degree',
-		file: statFolder.file(`A-0-X.tsv`),
-		cgmlstPairs,
-		epiDist,
-	})
-
+	// calc({// kontakt-tiefe variabel
+	// 	locationLayers: ['any'],
+	// 	delayDays: [7],
+	// 	contactDegrees: [0, 1],
+	// 	key: 'degree',
+	// 	file: statFolder.file(`A-7-X.tsv`),
+	// 	cgmlstPairs,
+	// 	epiDist,
+	// })
 
 }
 
 function calc(o) {
-	let output = lib.calc(o.cgmlstPairs, o.epiDist, o, o.key)
+	let output = lib.calc(o.sequenceMatrix, o.contactMatrix, o, o.key)
 	o.file.text = TALI.grid.stringify(output)
+	console.log(o.file.path)
 }
 
 

@@ -1,8 +1,8 @@
-meta	patientID
-s1	p1
-s2	p2
-s3	p3
-s4	p4
-s5	p5
-s6	p5
-s7	p7
+meta	patientID	typingDate
+s1	p1	2021-05-03
+s2	p2	2021-06-03
+s3	p3	2021-07-03
+s4	p4	2021-08-03
+s5	p5	2021-09-03
+s6	p5	2021-10-03
+s7	p7	2021-11-03

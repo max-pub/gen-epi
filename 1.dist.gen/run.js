@@ -19,6 +19,11 @@ for (let germ of settings.items('base')) {
 	// let metaTree = tree.makeMetaTree(data.meta)
 	// pairFolder.file('meta.tree.json').json = metaTree
 
+	let meta = {}
+	for(let key in data.meta){
+		let item = data.meta[key]
+		meta[key] = {patientID: item.patientID, typingDate: item.typingDate}
+	}
 	for (let typ of ['cgmlst']) { // 'mlst',
 		let seq = type.calculateDistanceMatrix(data[typ], germ.name)
 		console.log(seq)
@@ -27,6 +32,7 @@ for (let germ of settings.items('base')) {
 		let lt20 = type.filter(pat, 20)
 		distFolder.file('gen.tsv').text = TALI.grid.stringify({ lt20}, { sortRows: true, sortCols: true })
 		debugFolder.file('gen.tsv').text = TALI.grid.stringify({ pat, seq }, { sortRows: true, sortCols: true })
+		distFolder.file('seq.tsv').text = TALI.grid.stringify({ seq, meta }, { sortRows: true, sortCols: true })
 	}
 
 }
