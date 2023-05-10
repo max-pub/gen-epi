@@ -29,9 +29,9 @@ for (let germ of settings.items('base')) {
 		console.log(seq)
 		let pat = type.groupDistanceMatrixByPatientID(seq, data.meta)
 		console.log(pat)
-		let lt20 = type.filter(pat, 20)
-		distFolder.file('gen.tsv').text = TALI.grid.stringify({ lt20}, { sortRows: true, sortCols: true })
-		debugFolder.file('gen.tsv').text = TALI.grid.stringify({ pat, seq }, { sortRows: true, sortCols: true })
+		// let lt20 = type.filter(pat, 20)
+		// distFolder.file('gen.tsv').text = TALI.grid.stringify({ lt20}, { sortRows: true, sortCols: true })
+		// debugFolder.file('gen.tsv').text = TALI.grid.stringify({ pat, seq }, { sortRows: true, sortCols: true })
 		distFolder.file('seq.tsv').text = TALI.grid.stringify({ seq, meta }, { sortRows: true, sortCols: true })
 	}
 

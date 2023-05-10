@@ -1,7 +1,9 @@
 // export const filterKeys = (o, f) => Object.fromEntries(Object.entries(o).filter(([k, v]) => [f(k),v]))
 export const filter = (o, f) => Object.fromEntries(Object.entries(o).filter(([k, v]) => f(k, v)))
 
-export function calc(sequenceMatrix, contactMatrix, VARS = {}, KEY ) {
+export function calc(sequenceMatrix, contactMatrix, VARS = {}, KEY, folder ) {
+	// console.log("folder'",folder)
+	folder = folder.folder('debug').make
 	// console.log('calc',)
 	// const DEFAULT_VARS = { maxTimespanBetweenSequences: [90], maxTimespanBetweensContacts: [0], locationLayer: ['room'], maxContactDepth: [0] }
 	// VARS = { ...DEFAULT_VARS, ...VARS }
@@ -11,18 +13,20 @@ export function calc(sequenceMatrix, contactMatrix, VARS = {}, KEY ) {
 	// console.log(distances)
 	let output = { REL: {}, ABS: {} }
 	for (let maxTimespanBetweenSequences of VARS.maxTimespanBetweenSequences) {
+		console.log('filter and group sequence matrix ...')
 		let seq = seqDateFilter(sequenceMatrix, maxTimespanBetweenSequences)
 		// console.log('seq',seq)
 		let pat = type.groupDistanceMatrixByPatientID(seq.seq,seq.meta)
 		pat = type.filter(pat,VARS.maxDistanceBetweenSequences)
+		// folder.file(`pat.${maxTimespanBetweenSequences}.tsv`).text = TALI.grid.stringify({pat}, { sortRows: true, sortCols: true })
 		// console.log('pat',pat)
 		let pairsAtDistance = cgmlstPairs(pat)
 		// console.log('pairs',pairs)
-		// statFolder.file('seq.tsv').text = TALI.grid.stringify(seq, { sortRows: true, sortCols: true })
-
+		folder.file(`pairs.${maxTimespanBetweenSequences}.json`).json = pairsAtDistance
 		// continue
 		for (let maxTimespanBetweensContacts of VARS.maxTimespanBetweensContacts) {
 			for (let locationLayer of VARS.locationLayer) {
+				console.log('filter contact matrix ...')
 				let epiContacts = contactFilter(contactMatrix, locationLayer, maxTimespanBetweensContacts)
 				// console.log('epiContacts',epiContacts)
 				console.log('epiContacts', Object.keys(epiContacts).length)
@@ -44,7 +48,7 @@ export function calc(sequenceMatrix, contactMatrix, VARS = {}, KEY ) {
 						console.log('cgmlstPatients', cgmlstPatients.size)
 						// console.log(germ.name, dist, "dist", Object.keys(distances).length)
 						// if(deg>0) contacts = addContactDegree(contacts)
-						console.log(KEY.toUpperCase(), `cgMLST-distance:${dist} | maxTimespanBetweensContacts:${maxTimespanBetweensContacts} | locationLayer:${locationLayer} | maxContactDepth: ${maxContactDepth}`)//, '---', JSON.stringify(VARS))
+						console.log(KEY.toUpperCase(), `cgMLST-distance:${dist} | maxTimespanBetweenSequences: ${maxTimespanBetweenSequences} | maxTimespanBetweensContacts:${maxTimespanBetweensContacts} | locationLayer:${locationLayer} | maxContactDepth: ${maxContactDepth}`)//, '---', JSON.stringify(VARS))
 						let stat = { pairs: cgmlstContacts.length, contacts: 0 }
 						for (let [pid1, pid2] of cgmlstContacts) {
 							// let con = contactsForPID(epiContacts, pid1, deg)
@@ -101,7 +105,7 @@ export function seqDateFilter(data, days) {
 }
 
 import * as type from "../1.dist.gen/lib.js"
-import { unique } from "../deps.js"
+import { unique,TALI } from "../deps.js"
 
 export function contactFilter(data, location = 'any', maxTimespanBetweensContacts = 0) {
 	// let DAY = 24 * 60 * 60
@@ -161,7 +165,8 @@ export function cgmlstPairs(data) {
 		for (let pid2 in data[pid1]) {
 			if (pid1 >= pid2) continue
 			let val = data[pid1][pid2]
-			if (!val) continue
+			if(val === undefined) continue
+			// if (!val) continue
 			out[val] ??= []
 			out[val].push([pid1, pid2])
 		}

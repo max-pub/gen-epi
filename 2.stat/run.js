@@ -18,6 +18,7 @@ for (let germ of settings.items('dist')) {
 	// continue
 	let statFolder = settings.folder.stat.folder('gen.epi').folder(germ.name).make
 
+	console.log(germ.name, `read sequence matrix ...`)
 	let sequenceMatrix = TALI.grid.parse(germ.file(`seq.tsv`).text)
 	// let seq = lib.seqDateFilter(seqDist,90)
 	// statFolder.file('seq.tsv').text = TALI.grid.stringify(seq, { sortRows: true, sortCols: true })
@@ -29,6 +30,7 @@ for (let germ of settings.items('dist')) {
 	// let cgmlstPairs = lib.cgmlstPairs(cgmlstDist)
 	// console.log(cgmlstPairs)
 
+	console.log(germ.name, `read contact matrix ...`)
 	let contactMatrix = TALI.grid.parse(germ.file('epi.tsv').text)
 
 
@@ -80,18 +82,45 @@ for (let germ of settings.items('dist')) {
 	// 	contactMatrix,
 	// })
 
+	console.log(germ.name, `start calculation ...`)
+
+	// calc({
+	// 	maxDistanceBetweenSequences: 20,
+	// 	// maxTimespanBetweenSequences: [30,90,180,360,9999],
+	// 	maxTimespanBetweenSequences: [100,200,500,9999],
+	// 	locationLayer: ['any'],
+	// 	maxTimespanBetweensContacts: [0],
+	// 	maxContactDepth: [0],
+	// 	key: 'maxTimespanBetweenSequences',
+	// 	file: statFolder.file(`A-0-0-X2.tsv`),
+	// 	sequenceMatrix,
+	// 	contactMatrix,
+	// })
+
+	// calc({
+	// 	maxDistanceBetweenSequences: 20,
+	// 	// maxTimespanBetweenSequences: [30,90,180,360,9999],
+	// 	maxTimespanBetweenSequences: [180],
+	// 	locationLayer: ['any'],
+	// 	maxTimespanBetweensContacts: [3],
+	// 	maxContactDepth: [1],
+	// 	key: 'maxTimespanBetweenSequences',
+	// 	file: statFolder.file(`A-1-3-180.tsv`),
+	// 	sequenceMatrix,
+	// 	contactMatrix,
+	// })
 	calc({
 		maxDistanceBetweenSequences: 20,
-		maxTimespanBetweenSequences: [30,90,360,9999],
-		locationLayer: ['any'],
-		maxTimespanBetweensContacts: [0],
-		maxContactDepth: [0],
-		key: 'maxTimespanBetweenSequences',
-		file: statFolder.file(`A-0-0-X.tsv`),
+		// maxTimespanBetweenSequences: [30,90,180,360,9999],
+		maxTimespanBetweenSequences: [180],
+		locationLayer: ['any','ward','room'],
+		maxTimespanBetweensContacts: [7],
+		maxContactDepth: [1],
+		key: 'locationLayer',
+		file: statFolder.file(`X-1-7-180.tsv`),
 		sequenceMatrix,
 		contactMatrix,
 	})
-
 	// calc({// kontakt-tiefe variabel
 	// 	locationLayers: ['any'],
 	// 	delayDays: [0],
@@ -115,7 +144,7 @@ for (let germ of settings.items('dist')) {
 }
 
 function calc(o) {
-	let output = lib.calc(o.sequenceMatrix, o.contactMatrix, o, o.key)
+	let output = lib.calc(o.sequenceMatrix, o.contactMatrix, o, o.key, o.file.parent)
 	o.file.text = TALI.grid.stringify(output)
 	console.log(o.file.path)
 }
