@@ -97,18 +97,30 @@ for (let germ of settings.items('dist')) {
 	// 	contactMatrix,
 	// })
 
-	// calc({
-	// 	maxDistanceBetweenSequences: 20,
-	// 	// maxTimespanBetweenSequences: [30,90,180,360,9999],
-	// 	maxTimespanBetweenSequences: [180],
-	// 	locationLayer: ['any'],
-	// 	maxTimespanBetweensContacts: [3],
-	// 	maxContactDepth: [1],
-	// 	key: 'maxTimespanBetweenSequences',
-	// 	file: statFolder.file(`A-1-3-180.tsv`),
-	// 	sequenceMatrix,
-	// 	contactMatrix,
-	// })
+	calc({
+		maxDistanceBetweenSequences: 20,
+		maxTimespanBetweenSequences: [30,90,180,360,9999],
+		// maxTimespanBetweenSequences: [180],
+		locationLayer: ['any'],
+		maxTimespanBetweensContacts: [7],
+		maxContactDepth: [0],
+		key: 'maxTimespanBetweenSequences',
+		file: statFolder.file(`A-7-0-X.tsv`),
+		sequenceMatrix,
+		contactMatrix,
+	})	
+	calc({
+		maxDistanceBetweenSequences: 20,
+		// maxTimespanBetweenSequences: [30,90,180,360,9999],
+		maxTimespanBetweenSequences: [180],
+		locationLayer: ['any'],
+		maxTimespanBetweensContacts: [3],
+		maxContactDepth: [1],
+		key: 'maxTimespanBetweenSequences',
+		file: statFolder.file(`A-1-3-180.tsv`),
+		sequenceMatrix,
+		contactMatrix,
+	})
 	calc({
 		maxDistanceBetweenSequences: 20,
 		// maxTimespanBetweenSequences: [30,90,180,360,9999],
