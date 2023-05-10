@@ -104,7 +104,7 @@ export function crossMatch(tree, germID) {
 			if (output?.[p1]?.[p2] !== undefined) continue
 			// comparisons++
 			let result = contactBetweenTwoPatients(epi1, epi2)
-			console.log(p1,p2,result)
+			// console.log(p1,p2,result)
 			if (Object.keys(result).length == 0) continue
 			// if (Object.keys(result).length == 0) continue // CRITICAL... wieder einbauen?
 			output[p1][p2] = result
